@@ -126,3 +126,20 @@ brew install cmake
 brew cask install mono-mdk
 ```
 
+Build on Linux:
+
+```
+mkdir build
+cd build
+cmake ..
+```
+
+Build on MacOS:
+
+```
+mkdir build
+cd build
+export PATH=/Library/Frameworks/Mono.framework/Versions/Current/Commands:$PATH 
+cmake ..
+```
+

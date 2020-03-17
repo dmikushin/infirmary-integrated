@@ -47,8 +47,8 @@ else()
   list(APPEND MSBUILDFLAGS "/p:Configuration=Release")
 endif()
 
-option(TARGET_DEPENDENCIES "Target dependencies" "System.Data System.Drawing System.Windows.Forms")
-option(TARGET_FRAMEWORK_VERSION ".NET Target Framework Version" "4.0")
+set(TARGET_DEPENDENCIES System.Data System.Drawing System.Windows.Forms)
+set(TARGET_FRAMEWORK_VERSION "4.0" CACHE STRING ".NET Target Framework Version")
 
 add_subdirectory(src)
 
