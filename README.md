@@ -119,3 +119,10 @@ Install the following prerequisites (as of Ubuntu 18.04):
 sudo apt install cmake libmono-microsoft-csharp4.0-cil mono-mcs mono-xbuild mono-devel
 ```
 
+For MacOS Catalina 10.15:
+
+```
+brew install cmake
+brew cask install mono-mdk
+```
+
