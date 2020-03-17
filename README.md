@@ -1,18 +1,22 @@
-﻿Infirmary Integrated; (c) 2017-2019
-Ibi Keller (tanjera)
-Licensed under GNU GPL V3
+﻿# Infirmary Integrated
+
+(c) 2017-2019 Ibi Keller (tanjera)
+
+Licensed under GNU GPLv3
 
 Infirmary Integrated is free and open-source software developed to advance healthcare education for medical and nursing professionals and students. Developed as in-depth, accurate, and accessible educational tools, Infirmary Integrated can meet the needs of clinical simulators in emergency, critical care, and many other medical and nursing specialties.
 
 Infirmary Integrated is a free simulator for healthcare devices to aide in medical and nursing education. By simulating medical devices such as a defibrillator, students can practice reading tracings, interpreting waveforms, and starting interventions. Educators can use Infirmary Integrated to enhance simulations in a lifelike environment similar to patient care areas, allowing educators to simulate patient presentations and hemodynamic states ranging from simple simulations to extremely complex scenarios. Infirmary Integrated is developed to be clinically accurate and contain relevant content. Additionally, Infirmary Integrated is free and open source software in order to be accessible for healthcare professionals around the world.
 
 Infirmary Integrated currently functions as a simulator for the following healthcare devices:
+
 - Cardiac monitor
 - Defibrillator
 - 12-lead electrocardiograph (ECG)
 - Intra-aortic balloon pump (IABP)
 
 Main features in Infirmary Integrated include:
+
 - Realistic waveforms draw according to multiple factors, accounting for:
   - Atrial and/or ventricular contractions
   - Aberrant/ectopic beats and resulting decreased pulsatility
@@ -28,6 +32,7 @@ Main features in Infirmary Integrated include:
   - Device information (e.g. cardiac monitor waveforms) are also saved in simulation files
 
 And Infirmary Integrated can simulate hemodynamic and other readings including:
+
 - Heart rate (HR)
 - Temperature (T)
 - Blood pressure (NIBP non-invasive and invasive ABP via arterial line)
@@ -45,6 +50,7 @@ And Infirmary Integrated can simulate hemodynamic and other readings including:
 - Defibrillation, cardioversion, and transcutaneous pacing
 
 Also, Infirmary Integrated simulates the following cardiac rhythms with waveforms and corresponding vital signs for scenario management:
+
 - Asystole
 - Atrial Fibrillation
 - Atrial Flutter
@@ -76,6 +82,7 @@ Also, Infirmary Integrated simulates the following cardiac rhythms with waveform
 - Ventricular Tachycardia Polymorphic
 
 Infirmary Integrated also simulates the following respiratory rhythms:
+
 - Agonal
 - Apnea
 - Apneustic
@@ -85,6 +92,7 @@ Infirmary Integrated also simulates the following respiratory rhythms:
 - Regular
 
 Infirmary Integrated also supports full localization (translation) for the following languages:
+
 - አማርኛ (Amharic)
 - عربى (Arabic)
 - 中文 (Chinese)
@@ -98,7 +106,16 @@ Infirmary Integrated also supports full localization (translation) for the follo
 - Italiano (Italian)
 - 한국어 (Korean)
 - Português (Portuguese)
-- русский (Russian)
+- Русский (Russian)
 - Swahili (Kiswahili)
 
 For more information, feel free to visit http://www.infirmary-integrated.com/
+
+## Building
+
+Install the following prerequisites (as of Ubuntu 18.04):
+
+```
+sudo apt install cmake libmono-microsoft-csharp4.0-cil
+```
+
