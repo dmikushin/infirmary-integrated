@@ -1,0 +1,5 @@
+add_subdirectory(core)
+add_subdirectory(iidt)
+add_subdirectory(iise)
+add_subdirectory(tests)
+add_subdirectory(windows)

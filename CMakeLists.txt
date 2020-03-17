@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.7.2)
 
 project(infirmary)
+
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
 set(PROJECT_VERSION_PATCH 0)
@@ -28,10 +29,13 @@ include(${CSHARP_USE_FILE})
 find_package(MSBuild REQUIRED)
 include(${MSBuild_USE_FILE})
 
+if ("x${CMAKE_BUILD_TYPE}" STREQUAL "x")
+set(CMAKE_BUILD_TYPE Release)
+endif()
 string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
 
 # Set some default build flags.
-set(CSBUILDFLAGS "/win32icon:${CMAKE_CURRENT_SOURCE_DIR}/src/ide/GEPL_IDE/battery.ico")
+set(CSBUILDFLAGS "/win32icon:${CMAKE_CURRENT_SOURCE_DIR}/src/core/Resources/Icon_Infirmary.ico")
 set(MSBUILDFLAGS "")
 
 # Set up the compiler flag for Debug/Release mode.
@@ -42,6 +46,9 @@ else()
   list(APPEND CSBUILDFLAGS "/debug-" "/optimize+")
   list(APPEND MSBUILDFLAGS "/p:Configuration=Release")
 endif()
+
+option(TARGET_DEPENDENCIES "Target dependencies" System.Data System.Drawing System.Windows.Forms)
+option(TARGET_FRAMEWORK_VERSION ".NET Target Framework Version" "4.0")
 
 add_subdirectory(src)
 

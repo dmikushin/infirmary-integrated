@@ -1,0 +1,7 @@
+file(GLOB_RECURSE LIBRARY_SRC "*.cs" "*.resx")
+GET_FILENAME_COMPONENT(LIBRARY_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+set(LIBRARY_NAME "${LIBRARY_NAME}.dll")
+csharp_add_library(${LIBRARY_NAME} ${LIBRARY_SRC})
+csharp_add_dependencies(${LIBRARY_NAME} System.Drawing System.Windows.Forms)
+option(TARGET_FRAMEWORK_VERSION ".NET Target Framework Version" "2.0")
+csharp_add_project_meta(${LIBRARY_NAME} "TargetFrameworkVersion" TARGET_FRAMEWORK_VERSION)

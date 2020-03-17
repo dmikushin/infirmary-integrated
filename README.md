@@ -116,6 +116,6 @@ For more information, feel free to visit http://www.infirmary-integrated.com/
 Install the following prerequisites (as of Ubuntu 18.04):
 
 ```
-sudo apt install cmake libmono-microsoft-csharp4.0-cil
+sudo apt install cmake libmono-microsoft-csharp4.0-cil mono-mcs mono-xbuild mono-devel
 ```
 
