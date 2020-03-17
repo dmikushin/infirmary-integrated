@@ -1,0 +1,22 @@
+// Adopted from https://github.com/vgvassilev/solid
+
+#region Using directives
+
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+#endregion
+
+// The assembly version has following format: Major.Minor.Build.Revision
+[assembly: AssemblyVersion("@GEPLRE_Major@.@GEPLRE_Minor@.@GEPLRE_Revision@")]
+// TODO: Add the target name
+[assembly: AssemblyTitle("@VAR_Project_Title@")]
+[assembly: AssemblyCopyright("Copyright (c) 2009-@GEPLRE_LastYear@ GEPLRE.org")]
+[assembly: AssemblyDescription("@VAR_Project_Description@")]
+[assembly: AssemblyCompany("GEPLRE.org")]
+[assembly: AssemblyFileVersion("@GEPLRE_Major@.@GEPLRE_Minor@.0.@GEPLRE_Revision@")]
+[assembly: AssemblyCulture("")]
+[assembly: AssemblyTrademark("@PROJECT_NAME@")]
+[assembly: AssemblyProduct("@PROJECT_NAME@")]
+[assembly: AssemblyInformationalVersion("@GEPLRE_Version@")]
+[assembly: AssemblyConfiguration("")]
