@@ -116,7 +116,11 @@ For more information, feel free to visit http://www.infirmary-integrated.com/
 Install the following prerequisites (as of Ubuntu 18.04):
 
 ```
-sudo apt install cmake libmono-microsoft-csharp4.0-cil mono-mcs mono-xbuild mono-devel nuget
+sudo apt install gnupg ca-certificates
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+sudo apt update
+sudo apt install cmake libmono-microsoft-csharp4.0-cil mono-mcs mono-xbuild mono-devel mono-complete nuget
 ```
 
 For MacOS Catalina 10.15:
