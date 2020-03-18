@@ -6,6 +6,15 @@ set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
 set(PROJECT_VERSION_PATCH 0)
 
+macro(get_library_name TARGET_DIR LIBRARY_NAME)
+get_filename_component(LIBRARY_NAME_ORIG ${TARGET_DIR} NAME)
+string(TOLOWER ${LIBRARY_NAME_ORIG} LIBRARY_NAME_LOWER)
+string(SUBSTRING ${LIBRARY_NAME_LOWER} 0 1 FIRST_LETTER)
+string(TOUPPER ${FIRST_LETTER} FIRST_LETTER)
+string(REGEX REPLACE "^.(.*)" "${FIRST_LETTER}\\1" LIBRARY_NAME_CAP "${LIBRARY_NAME_LOWER}")
+set(${LIBRARY_NAME} "${LIBRARY_NAME_CAP}.dll")
+endmacro(get_library_name)
+
 # Setup build locations.
 if(NOT CMAKE_RUNTIME_OUTPUT_DIR)
   set(CMAKE_RUNTIME_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
@@ -22,6 +31,8 @@ file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Find C#
+set(CSHARP_FRAMEWORK_VERSION "4.5")
+set(CSHARP_SDK_COMPILER "/sdk:5")
 find_package(CSharp REQUIRED)
 include(${CSHARP_USE_FILE})
 
@@ -47,8 +58,7 @@ else()
   list(APPEND MSBUILDFLAGS "/p:Configuration=Release")
 endif()
 
-set(TARGET_DEPENDENCIES System.Data System.Drawing System.Windows.Forms)
-set(TARGET_FRAMEWORK_VERSION "4.0" CACHE STRING ".NET Target Framework Version")
+set(TARGET_DEPENDENCIES System.Data System.Drawing System.Net.Http System.Windows.Forms)
 
 add_subdirectory(src)
 

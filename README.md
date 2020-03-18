@@ -139,6 +139,8 @@ Build on MacOS:
 ```
 mkdir build
 cd build
+nuget install PdfSharp
+find . -name "PdfSharp.dll" -exec cp {} . \;                                      
 export PATH=/Library/Frameworks/Mono.framework/Versions/Current/Commands:$PATH 
 cmake ..
 ```
