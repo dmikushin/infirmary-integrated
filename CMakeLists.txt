@@ -31,7 +31,7 @@ file(MAKE_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Find C#
-set(CSHARP_FRAMEWORK_VERSION "4.5")
+set(CSHARP_FRAMEWORK_VERSION "4.0")
 set(CSHARP_SDK_COMPILER "/sdk:5")
 find_package(CSharp REQUIRED)
 include(${CSHARP_USE_FILE})
@@ -46,7 +46,7 @@ endif()
 string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
 
 # Set some default build flags.
-set(CSBUILDFLAGS "/win32icon:${CMAKE_CURRENT_SOURCE_DIR}/src/core/Resources/Icon_Infirmary.ico")
+set(CSBUILDFLAGS "/win32icon:${CMAKE_CURRENT_SOURCE_DIR}/src/Core/Resources/Icon_Infirmary.ico")
 set(MSBUILDFLAGS "")
 
 # Set up the compiler flag for Debug/Release mode.
