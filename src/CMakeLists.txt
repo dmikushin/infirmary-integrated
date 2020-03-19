@@ -1,5 +1,5 @@
 add_subdirectory(Core)
-add_subdirectory(IIDT)
-add_subdirectory(IISE)
+#add_subdirectory(IIDT)
+#add_subdirectory(IISE)
 #add_subdirectory(Tests)
 add_subdirectory(Windows)

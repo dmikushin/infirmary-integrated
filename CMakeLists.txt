@@ -32,13 +32,15 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Find C#
 set(CSHARP_FRAMEWORK_VERSION "4.0")
+if(FALSE)
 set(CSHARP_SDK_COMPILER "/sdk:5")
+endif()
 find_package(CSharp REQUIRED)
 include(${CSHARP_USE_FILE})
 
 # Find MSBuild
-find_package(MSBuild REQUIRED)
-include(${MSBuild_USE_FILE})
+#find_package(MSBuild REQUIRED)
+#include(${MSBuild_USE_FILE})
 
 if ("x${CMAKE_BUILD_TYPE}" STREQUAL "x")
 set(CMAKE_BUILD_TYPE Release)
@@ -47,18 +49,18 @@ string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
 
 # Set some default build flags.
 set(CSBUILDFLAGS "/win32icon:${CMAKE_CURRENT_SOURCE_DIR}/src/Core/Resources/Icon_Infirmary.ico")
-set(MSBUILDFLAGS "")
+#set(MSBUILDFLAGS "")
 
 # Set up the compiler flag for Debug/Release mode.
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   list(APPEND CSBUILDFLAGS "/debug:full" "/debug+" "/optimize-")
-  list(APPEND MSBUILDFLAGS "/p:Configuration=Debug")
+  #list(APPEND MSBUILDFLAGS "/p:Configuration=Debug")
 else()
   list(APPEND CSBUILDFLAGS "/debug-" "/optimize+")
-  list(APPEND MSBUILDFLAGS "/p:Configuration=Release")
+  #list(APPEND MSBUILDFLAGS "/p:Configuration=Release")
 endif()
 
-set(TARGET_DEPENDENCIES System.Data System.Drawing System.Net.Http System.Windows.Forms)
+set(TARGET_DEPENDENCIES System.Data.dll System.Drawing.dll System.Net.Http.dll System.Windows.Forms.dll System.Threading.dll)
 
 add_subdirectory(src)
 
