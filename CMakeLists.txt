@@ -24,6 +24,10 @@ foreach(SUBPROJECT_NAME ${SUBPROJECT_NAMES})
 		"netcoreapp3.1" ${SOURCE_PATHS})
 endforeach()
 
-dotnet_project_dependency(Core PdfSharp)
+dotnet_project_dependency(Core ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src PdfSharp)
 
-# TODO Define cross-project dependencies
+set(CORE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src/Core/Core.csproj)
+dotnet_project_reference(IIDT ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src ${CORE})
+dotnet_project_reference(IISE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src ${CORE})
+dotnet_project_reference(Tests ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src ${CORE})
+dotnet_project_reference(Windows ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src ${CORE})

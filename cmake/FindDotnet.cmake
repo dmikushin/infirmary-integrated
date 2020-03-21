@@ -43,25 +43,37 @@ endmacro()
 
 macro(add_dotnet_project SOL_NAME PROJ_NAME PROJ_PATH TARGET_FRAMEWORK SOURCE)
     add_custom_target(${PROJ_NAME}
+        DEPENDS ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj)
+    add_custom_command(
+        OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
         DEPENDS ${PROJECT_MANAGER_BINARY} ${SOURCE} ${ARGN}
-        COMMAND ${DOTNET} run -- create ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME} framework ${TARGET_FRAMEWORK} ${SOURCE} ${ARGN}
+        COMMAND ${DOTNET} run -- create ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}
+            framework ${TARGET_FRAMEWORK} ${SOURCE} ${ARGN}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_MANAGER}/${PROJECT_MANAGER}
         COMMENT "Creating project ${PROJ_NAME}")
 	add_custom_command(
-		OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${SOL_NAME}/${SOL_NAME}.sln APPEND
-		COMMAND dotnet sln ${CMAKE_CURRENT_BINARY_DIR}/${SOL_NAME}/${SOL_NAME}.sln add
-			${SOL_NAME}/src/${PROJ_NAME}/${PROJ_NAME}.csproj)
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${SOL_NAME}/${SOL_NAME}.sln
+        APPEND COMMAND dotnet sln ${CMAKE_CURRENT_BINARY_DIR}/${SOL_NAME}/${SOL_NAME}.sln
+            add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj)
     add_dependencies(${SOL_NAME} ${PROJ_NAME})
 endmacro()
 
-# TODO
-macro(dotnet_project_dependency PROJ_NAME DEP_NAME)
-if (FALSE)
-add_custom_target(PdfSharp
-	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src/Core/Core.csproj
-	COMMAND dotnet add src/Core package PdfSharp
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}
-	COMMENT "Adding PdfSharp dependency of Core project")
-add_dependencies(Core PdfSharp)
-endif()
+macro(dotnet_project_dependency PROJ_NAME PROJ_PATH DEP_NAME)
+    add_custom_command(
+        OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+        APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj package ${DEP_NAME}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+endmacro()
+
+macro(dotnet_project_reference PROJ_NAME PROJ_PATH REF_NAME)
+    add_custom_command(
+        OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+        APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj reference ${REF_NAME}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+    foreach(ARG ${ARGN})
+        add_custom_command(
+            OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+            APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj reference ${ARG}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})        
+    endforeach(ARG ${ARGN})
 endmacro()
