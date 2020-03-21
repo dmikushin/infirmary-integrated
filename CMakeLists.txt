@@ -14,36 +14,16 @@ if ("x${CMAKE_BUILD_TYPE}" STREQUAL "x")
 set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_custom_target(${PROJECT_NAME} ALL
-	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}.sln
-	COMMAND dotnet build ${PROJECT_NAME}/${PROJECT_NAME}.sln -o ${CMAKE_CURRENT_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-	COMMENT "Building solution ${PROJECT_NAME}")
-
-add_custom_command(
-	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}.sln
-	COMMAND dotnet new sln -o ${PROJECT_NAME}
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-	COMMENT "Creating solution ${PROJECT_NAME}")
+add_solution(${PROJECT_NAME})
 
 file(GLOB SUBPROJECT_NAMES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/src/" "${CMAKE_CURRENT_SOURCE_DIR}/src/*")
 foreach(SUBPROJECT_NAME ${SUBPROJECT_NAMES})
 	file(GLOB_RECURSE SOURCE_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/src/${SUBPROJECT_NAME}
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/${SUBPROJECT_NAME}/*.cs")
-	add_dotnet_project(${SUBPROJECT_NAME} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src
+	add_dotnet_project(${PROJECT_NAME} ${SUBPROJECT_NAME} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src
 		"netcoreapp3.1" ${SOURCE_PATHS})
-	add_dependencies(${PROJECT_NAME} ${SUBPROJECT_NAME})
-	add_custom_command(
-		OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}.sln APPEND
-		COMMAND dotnet sln ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}.sln add
-			${PROJECT_NAME}/src/${SUBPROJECT_NAME}/${SUBPROJECT_NAME}.csproj)
 endforeach()
 
-if (FALSE)
-add_custom_target(PdfSharp
-	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/src/Core/Core.csproj
-	COMMAND dotnet add src/Core package PdfSharp
-	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}
-	COMMENT "Adding PdfSharp dependency of Core project")
-add_dependencies(Core PdfSharp)
-endif()
+dotnet_project_dependency(Core PdfSharp)
+
+# TODO Define cross-project dependencies
