@@ -58,21 +58,31 @@ macro(add_dotnet_project SOL_NAME PROJ_NAME PROJ_PATH TARGET_FRAMEWORK SOURCE)
     add_dependencies(${SOL_NAME} ${PROJ_NAME})
 endmacro()
 
+macro(dotnet_project_package PROJ_NAME PROJ_PATH PACK_NAME)
+    add_custom_command(
+        OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+        APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj package ${PACK_NAME}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+endmacro()
+
 macro(dotnet_project_dependency PROJ_NAME PROJ_PATH DEP_NAME)
     add_custom_command(
         OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
-        APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj package ${DEP_NAME}
+        APPEND COMMAND ${DOTNET} run -- modify ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}
+            dependency ${DEP_NAME} ${ARGN}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
 endmacro()
 
 macro(dotnet_project_reference PROJ_NAME PROJ_PATH REF_NAME)
     add_custom_command(
         OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+        DEPENDS ${REF_NAME}
         APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj reference ${REF_NAME}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
     foreach(ARG ${ARGN})
         add_custom_command(
             OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+            DEPENDS ${ARG}
             APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj reference ${ARG}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})        
     endforeach(ARG ${ARGN})

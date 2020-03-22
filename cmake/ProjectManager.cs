@@ -9,6 +9,11 @@ namespace ProjectManager
     {
         XDocument projectFile;
 
+        ProjectFile(XDocument projectFile)
+        {
+            this.projectFile = projectFile;
+        }
+
         ProjectFile(string targetFramework)
         {
             projectFile = new XDocument(  
@@ -20,9 +25,14 @@ namespace ProjectManager
                     new XElement("ItemGroup")));
         }
 
+        static ProjectFile Load(string path)
+        {
+            return new ProjectFile(XDocument.Load(path));
+        }
+
         static void Main(string[] args)
         {
-            if (args.Length > 4)
+            if (args.Length >= 4)
             {
                 if ((args[0] == "create") && (args[2] == "framework"))
                 {
@@ -30,14 +40,25 @@ namespace ProjectManager
                     string targetFramework = args[3];
                     string[] sources = args.Skip(4).ToArray();
                     var projectFile = new ProjectFile(targetFramework);
-                    projectFile.AddSources(sources);
+                    if (sources.Length > 0)
+                        projectFile.AddSources(sources);
                     Directory.CreateDirectory(Path.GetDirectoryName(projectPath));
+                    projectFile.Save(projectPath + ".csproj");
+                    return;
+                }
+                else if ((args[0] == "modify") && (args[2] == "dependency"))
+                {
+                    string projectPath = args[1];
+                    string[] references = args.Skip(3).ToArray();
+                    var projectFile = ProjectFile.Load(projectPath + ".csproj");
+                    projectFile.AddReferences(references);
                     projectFile.Save(projectPath + ".csproj");
                     return;
                 }
             }
 
-            Console.WriteLine("Usage: ProjectManager create <project_path> framework <framework_version> <source> [<source> ...]");
+            Console.WriteLine("Usage: ProjectManager create <project_path> framework <framework_version> [<source> ...]");
+            Console.WriteLine("Usage: ProjectManager modify <project_path> dependency <reference> [<reference> ...]");
         }
 
         private void Save(string projectPath)
@@ -55,20 +76,63 @@ namespace ProjectManager
 
         private void AddSource(string path)
         {
-            var itemGroup = projectFile.Nodes()
-                .OfType<XElement>()
-                .DescendantNodes()
-                .OfType<XElement>().First(xy => xy.Name.LocalName == "ItemGroup");
-            var xelem = AddContent(path, projectFile);
-            itemGroup.Add(xelem);
+            AddItem("Compile", path);
         }
 
-        private XElement AddContent(string pathToAdd, XDocument doc) 
-        { 
-            XNamespace rootNamespace = doc.Root.Name.NamespaceName; 
-            var xelem = new XElement(rootNamespace + "Compile"); 
-            xelem.Add(new XAttribute("Include", pathToAdd)); 
-            return xelem;
-        }	
+        private void AddReferences(string[] references)
+        {
+            foreach (var reference in references)
+            {
+                AddReference(reference);
+            }
+        }
+
+        private void AddReference(string reference)
+        {
+            AddItem("Reference", reference);
+        }
+
+        private void AddItem(string type, string value)
+        {
+            var itemGroups = projectFile
+                .Nodes()
+                .OfType<XElement>()
+                .DescendantNodes()
+                .OfType<XElement>()
+                .Where(x => x.Name.LocalName == "ItemGroup");
+
+            XElement targetItemGroup = null;
+            foreach (var itemGroup in itemGroups)
+            {
+                if (itemGroup.Elements(type).Any())
+                {
+                    targetItemGroup = itemGroup;
+                    break;
+                }
+            }
+
+            if (targetItemGroup == null)
+            {
+                foreach (var itemGroup in itemGroups)
+                {
+                    if (itemGroup.IsEmpty)
+                    {
+                        targetItemGroup = itemGroup;
+                        break;
+                    }
+                }
+            }
+
+            XNamespace rootNamespace = projectFile.Root.Name.NamespaceName; 
+            if (targetItemGroup == null)
+            {
+                targetItemGroup = new XElement(rootNamespace + "ItemGroup");
+                projectFile.Element("Project").Add(targetItemGroup);
+            }
+
+            var xelem = new XElement(rootNamespace + type); 
+            xelem.Add(new XAttribute("Include", value)); 
+            targetItemGroup.Add(xelem);
+        }
     }
 }
