@@ -63,6 +63,12 @@ macro(dotnet_project_package PROJ_NAME PROJ_PATH PACK_NAME)
         OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
         APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj package ${PACK_NAME}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+    foreach(ARG ${ARGN})
+        add_custom_command(
+            OUTPUT ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj
+            APPEND COMMAND dotnet add ${PROJ_PATH}/${PROJ_NAME}/${PROJ_NAME}.csproj package ${ARG}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+    endforeach(ARG ${ARGN})
 endmacro()
 
 macro(dotnet_project_dependency PROJ_NAME PROJ_PATH DEP_NAME)
